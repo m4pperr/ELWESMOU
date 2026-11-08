@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <rect x="10" y="10" width="140" height="140" rx="34" fill="#141416" />
+  <!-- Minimalist Bag Handle -->
+  <path d="M 56 46 C 56 22, 104 22, 104 46" fill="none" stroke="#FF5500" stroke-width="9" stroke-linecap="round" />
+  <!-- Geometric "E" Bars -->
+  <line x1="48" y1="68" x2="112" y2="68" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
+  <line x1="48" y1="94" x2="94" y2="94" stroke="#FF5500" stroke-width="10" stroke-linecap="round" />
+  <line x1="48" y1="120" x2="112" y2="120" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" />
+</svg>
+

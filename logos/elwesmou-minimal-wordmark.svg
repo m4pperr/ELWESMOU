@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 150" width="100%" height="100%">
+  <!-- Pure Typographic Wordmark -->
+  <text x="300" y="84" text-anchor="middle" font-family="'Inter', 'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="800" letter-spacing="6" fill="#141416">
+    ELWESMOU
+  </text>
+
+  <!-- Minimalist Smile / Delivery Arc under the wordmark -->
+  <path d="M 170 106 Q 300 132 430 104" fill="none" stroke="#FF5500" stroke-width="6" stroke-linecap="round" />
+  <!-- Minimalist Arrowhead tip on the right of the arc -->
+  <path d="M 418 98 L 433 103 L 424 116" fill="none" stroke="#FF5500" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+

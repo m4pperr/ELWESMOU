@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 140" width="100%" height="100%">
+  <!-- Minimalist Geometric Icon: Abstract "E" + Shopping Bag Outline -->
+  <g transform="translate(24, 22)">
+    <!-- Rounded Minimal Bag / Cube Frame -->
+    <rect x="0" y="18" width="78" height="78" rx="20" fill="#141416" />
+    <!-- Minimalist Bag Handle Arc -->
+    <path d="M 24 18 C 24 -2, 54 -2, 54 18" fill="none" stroke="#FF5500" stroke-width="7" stroke-linecap="round" />
+    <!-- Geometric Negative-Space "E" Bars Inside -->
+    <line x1="23" y1="40" x2="55" y2="40" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" />
+    <line x1="23" y1="57" x2="46" y2="57" stroke="#FF5500" stroke-width="7" stroke-linecap="round" />
+    <line x1="23" y1="74" x2="55" y2="74" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" />
+  </g>
+
+  <!-- Clean Geometric Sans-Serif Wordmark -->
+  <text x="128" y="92" font-family="'Inter', 'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-size="60" font-weight="800" letter-spacing="4" fill="#141416">
+    ELWESMOU<tspan fill="#FF5500">.</tspan>
+  </text>
+</svg>
+

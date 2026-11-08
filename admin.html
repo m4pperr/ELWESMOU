@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin &amp; Configuration Google Sheet — ELWESMOU DZ</title>
+  <link rel="icon" type="image/png" href="./logos/minimal-1-favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./index.html" class="brand-logo">
+        <img src="./logos/minimal-1-transparent.png" alt="ELWESMOU" />
+      </a>
+      <nav class="main-nav">
+        <a href="./index.html">Voir la Boutique</a>
+        <a href="./support-telephone.html">Page Support Téléphone</a>
+        <a href="./filtre-evier.html">Page Filtre Évier</a>
+        <a href="./sac-magnetique.html">Page Sac Magnétique</a>
+        <a href="./admin.html" class="active">⚙️ Admin &amp; Google Sheet</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shop-container" style="max-width:960px;">
+    <h1 style="font-size:1.8rem;font-weight:900;margin-bottom:8px;">⚙️ Tableau de Bord &amp; Connexion Google Sheet</h1>
+    <p style="color:var(--text-secondary);margin-bottom:28px;">
+      Teste ta connexion Google Sheets, récupère les liens de tes 3 pages produits pour Facebook/TikTok Ads et consulte les commandes enregistrées.
+    </p>
+
+    <div class="info-card" style="margin-bottom:28px;">
+      <h3>1. Liens de tes 3 Pages Produits (Pour tes campagnes Facebook / TikTok Ads)</h3>
+      <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:14px;">
+        Chaque produit possède sa propre Landing Page avec formulaire COD Algérie 58 Wilayas :
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-subtle);padding:12px 16px;border-radius:10px;">
+          <div>
+            <strong>Support Téléphone Flexible 360° (1 900 DA)</strong>
+            <div style="font-size:0.82rem;color:var(--text-secondary);">/support-telephone.html</div>
+          </div>
+          <a href="./support-telephone.html" class="btn-outline">Ouvrir la page &rarr;</a>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-subtle);padding:12px 16px;border-radius:10px;">
+          <div>
+            <strong>Filtre d'Évier Pliable à Ventouse (2 400 DA)</strong>
+            <div style="font-size:0.82rem;color:var(--text-secondary);">/filtre-evier.html</div>
+          </div>
+          <a href="./filtre-evier.html" class="btn-outline">Ouvrir la page &rarr;</a>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-subtle);padding:12px 16px;border-radius:10px;">
+          <div>
+            <strong>Sac Magnétique Porte-Gourde (3 900 DA)</strong>
+            <div style="font-size:0.82rem;color:var(--text-secondary);">/sac-magnetique.html</div>
+          </div>
+          <a href="./sac-magnetique.html" class="btn-outline">Ouvrir la page &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card" style="margin-bottom:28px;">
+      <h3>2. Tester l'envoi d'une commande vers ton Google Sheet</h3>
+      <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:14px;">
+        Colle ici l'URL de ton Web App Google Script (créé avec le fichier <code>google-sheet-script.js</code>) pour envoyer une commande test :
+      </p>
+      <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+        <input type="url" id="sheetUrlInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="flex:1;padding:12px 14px;border:1.5px solid #DCDCD8;border-radius:10px;font-size:0.9rem;" />
+        <button class="btn-primary" onclick="sendTestOrder()">Envoyer une commande test 🚀</button>
+      </div>
+      <div id="testStatusMsg" style="font-size:0.88rem;font-weight:700;"></div>
+    </div>
+
+    <div class="info-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 style="margin:0;">3. Commandes enregistrées sur cet appareil</h3>
+        <button class="btn-outline" onclick="localStorage.removeItem('elwesmou_orders'); renderAdminOrders();">Vider la liste</button>
+      </div>
+      <div id="adminOrdersList"></div>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
+  <script>
+    const savedUrl = localStorage.getItem('elwesmou_sheet_url') || (typeof GOOGLE_SHEET_WEBHOOK_URL !== 'undefined' ? GOOGLE_SHEET_WEBHOOK_URL : '');
+    document.getElementById('sheetUrlInput').value = savedUrl;
+
+    async function sendTestOrder() {
+      const url = document.getElementById('sheetUrlInput').value.trim();
+      const msg = document.getElementById('testStatusMsg');
+      if (!url) {
+        msg.style.color = '#DC2626';
+        msg.textContent = '⚠️ Colle d\'abord ton URL Google Script (https://script.google.com/macros/s/.../exec)';
+        return;
+      }
+      localStorage.setItem('elwesmou_sheet_url', url);
+      msg.style.color = 'var(--brand-orange)';
+      msg.textContent = '⏳ Envoi de la commande test vers Google Sheets...';
+
+      const testOrder = {
+        orderId: 'TEST-' + Math.floor(1000 + Math.random() * 9000),
+        date: new Date().toLocaleString('fr-DZ'),
+        productName: 'Support Téléphone Flexible 360° (TEST)',
+        quantity: 2,
+        customerName: 'Client Test Algérie',
+        phone: '0550123456',
+        wilaya: '16 - Alger (الجزائر العاصمة)',
+        commune: 'Bab Ezzouar',
+        deliveryType: 'À domicile (لباب الدار)',
+        totalDA: '3 650 DA',
+        status: '⏳ قيد التأكيد (En attente d\'appel)'
+      };
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(testOrder)
+        });
+        msg.style.color = '#16A34A';
+        msg.textContent = '✓ Commande test envoyée ! Vérifie ton Google Sheet (une ligne TEST vient d\'apparaître).';
+      } catch (e) {
+        msg.style.color = '#DC2626';
+        msg.textContent = 'Erreur : ' + e.message;
+      }
+    }
+
+    function renderAdminOrders() {
+      const orders = JSON.parse(localStorage.getItem('elwesmou_orders') || '[]');
+      const box = document.getElementById('adminOrdersList');
+      if (orders.length === 0) {
+        box.innerHTML = '<p style="color:var(--text-secondary);font-size:0.9rem;">Aucune commande passée depuis ce navigateur pour le moment.</p>';
+        return;
+      }
+      box.innerHTML = orders.map(o => `
+        <div style="background:var(--bg-subtle);padding:14px 16px;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div>
+            <strong>${o.orderId} — ${o.customerName} (${o.phone})</strong>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">${o.productName} (x${o.quantity}) • ${o.wilaya} - ${o.commune} (${o.deliveryType})</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800;color:var(--brand-orange);">${o.totalDA}</div>
+            <div style="font-size:0.78rem;color:#15803D;font-weight:700;">${o.status}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderAdminOrders();
+  </script>
+</body>
+</html>

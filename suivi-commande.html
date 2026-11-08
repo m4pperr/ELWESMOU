@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تتبع الطلبية | Suivi de Commande — ELWESMOU DZ</title>
+  <title>Suivi de Commande | تتبع الطلبية — ELWESMOU DZ</title>
   <link rel="icon" type="image/png" href="./logos/minimal-1-favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body class="rtl">
+<body>
 
   <div class="announcement-bar">
-    🚚 التوصيل متوفر لـ <span>58 ولاية</span> — الدفع عند الاستلام (تخلص كي توصلك السلعة لباب الدار) 🇩🇿
+    🚚 Livraison disponible vers les <span>58 Wilayas</span> — Paiement à la livraison (Tu paies à la réception !) 🇩🇿
   </div>
 
   <header class="site-header">
@@ -20,26 +20,31 @@
         <img src="./logos/minimal-1-transparent.png" alt="ELWESMOU" />
       </a>
       <nav class="main-nav">
-        <a href="./index.html">الرئيسية (Boutique)</a>
-        <a href="./suivi-commande.html" class="active">📦 تتبع طلبيتك</a>
-        <a href="./mentions-legales.html">سياسة الاستبدال والشروط</a>
+        <a href="./index.html">Boutique</a>
+        <a href="./support-telephone.html">Support Téléphone 360°</a>
+        <a href="./filtre-evier.html">Filtre d'Évier</a>
+        <a href="./sac-magnetique.html">Sac Magnétique</a>
+        <a href="./suivi-commande.html" class="active">📦 Suivre ma commande</a>
       </nav>
+      <div class="header-actions">
+        <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">🇩🇿 العربية / الدارجة</button>
+      </div>
     </div>
   </header>
 
   <main class="shop-container" style="max-width:680px;">
     <div class="info-card" style="text-align:center;">
-      <h1 style="font-size:1.7rem;font-weight:900;margin-bottom:8px;">📦 تتبع حالة طلبيتك (Suivi de Commande)</h1>
-      <p style="color:var(--text-secondary);margin-bottom:20px;">
-        أدخل رقم الهاتف لي درت بيه الطلبية باش تشوف وين لحقت السلعة تاعك:
+      <h1 id="trackTitle" style="font-size:1.7rem;font-weight:900;margin-bottom:8px;">📦 Suivre l'état de ma commande</h1>
+      <p id="trackSub" style="color:var(--text-secondary);margin-bottom:20px;">
+        Entre le numéro de téléphone utilisé lors de ta commande pour voir où en est ton colis :
       </p>
 
       <form onsubmit="searchOrder(event)" style="display:flex;gap:10px;max-width:460px;margin:0 auto 24px;">
         <input type="tel" id="trackPhoneInput" required placeholder="05 / 06 / 07 XX XX XX XX" style="flex:1;padding:12px 16px;border:1.5px solid #DCDCD8;border-radius:999px;font-family:inherit;font-size:0.95rem;" />
-        <button type="submit" class="btn-primary" id="trackBtn">بحث 🔍</button>
+        <button type="submit" class="btn-primary" id="trackBtn">Rechercher 🔍</button>
       </form>
 
-      <div id="trackResultBox" style="text-align:right;"></div>
+      <div id="trackResultBox"></div>
     </div>
   </main>
 
@@ -49,16 +54,32 @@
         <img src="./logos/minimal-1-dark-transparent.png" alt="ELWESMOU" />
       </a>
       <div class="footer-links">
-        <a href="./index.html">الرئيسية</a>
-        <a href="./mentions-legales.html">سياسة الاستبدال والشروط القانونية</a>
+        <a href="./index.html">Accueil</a>
+        <a href="./suivi-commande.html">Suivi de commande</a>
+        <a href="./mentions-legales.html">Politique d'échange &amp; Mentions légales</a>
       </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ELWESMOU Algeria 🇩🇿 — Tous droits réservés</span>
+      <span>Livraison 58 Wilayas • Paiement à la livraison (COD)</span>
     </div>
   </footer>
 
+  <script>
+    window.renderPageSpecificLang = function(lang) {
+      const isAr = lang === 'ar';
+      document.getElementById('trackTitle').textContent = isAr ? '📦 تتبع حالة طلبيتك' : '📦 Suivre l’état de ma commande';
+      document.getElementById('trackSub').textContent = isAr
+        ? 'أدخل رقم الهاتف لي درت بيه الطلبية باش تشوف وين لحقت السلعة تاعك:'
+        : 'Entre le numéro de téléphone utilisé lors de ta commande pour voir où en est ton colis :';
+      document.getElementById('trackBtn').textContent = isAr ? 'بحث 🔍' : 'Rechercher 🔍';
+    };
+  </script>
   <script src="./app.js"></script>
   <script>
     async function searchOrder(e) {
       if (e) e.preventDefault();
+      const isAr = currentLang === 'ar';
       const phone = document.getElementById('trackPhoneInput').value.replace(/\s+/g, '');
       const box = document.getElementById('trackResultBox');
       const btn = document.getElementById('trackBtn');
@@ -67,49 +88,50 @@
       btn.textContent = '⏳...';
 
       let matches = [];
+      const webhookUrl = (typeof GOOGLE_SHEET_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEET_WEBHOOK_URL) || localStorage.getItem('elwesmou_sheet_url') || '';
 
-      // 1. Si Google Sheets est connecté, on cherche en direct dans le Google Sheet (Colonne K = Statut)
-      if (typeof GOOGLE_SHEET_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEET_WEBHOOK_URL) {
+      if (webhookUrl) {
         try {
-          const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL + '?phone=' + encodeURIComponent(phone));
+          const res = await fetch(webhookUrl + '?phone=' + encodeURIComponent(phone));
           const json = await res.json();
           if (json && Array.isArray(json.orders)) {
             matches = json.orders;
           }
         } catch (err) {
-          console.warn('Fallback sur stockage local:', err);
+          console.warn('Fallback local:', err);
         }
       }
 
-      // 2. Sinon (ou en complément), on vérifie les commandes enregistrées sur l'appareil
       if (matches.length === 0) {
         const localOrders = JSON.parse(localStorage.getItem('elwesmou_orders') || '[]');
         matches = localOrders.filter(o => (o.phone || '').replace(/\s+/g, '').includes(phone));
       }
 
       btn.disabled = false;
-      btn.textContent = 'بحث 🔍';
+      btn.textContent = isAr ? 'بحث 🔍' : 'Rechercher 🔍';
 
       if (matches.length === 0) {
         box.innerHTML = `
           <div style="background:#FFF5F0;border:1px solid var(--brand-orange);padding:16px;border-radius:12px;text-align:center;">
-            <strong>لم نجد طلبية مسجلة بهذا الرقم حالياً.</strong>
-            <p style="font-size:0.88rem;color:var(--text-secondary);margin-top:4px;">إذا درت الطلبية تاعك مؤخراً، فريقنا راح يعيطلك في التليفون لتأكيدها وإرسالها!</p>
+            <strong>${isAr ? 'لم نجد طلبية مسجلة بهذا الرقم حالياً.' : 'Aucune commande trouvée avec ce numéro pour le moment.'}</strong>
+            <p style="font-size:0.88rem;color:var(--text-secondary);margin-top:4px;">
+              ${isAr ? 'إذا درت الطلبية تاعك مؤخراً، فريقنا راح يعيطلك في التليفون لتأكيدها وإرسالها!' : 'Si vous venez de passer commande, notre équipe vous appellera très vite pour la confirmer !'}
+            </p>
           </div>
         `;
         return;
       }
 
       box.innerHTML = matches.map(o => `
-        <div style="background:var(--bg-subtle);padding:16px;border-radius:12px;margin-bottom:12px;border-right:4px solid var(--brand-orange);">
+        <div style="background:var(--bg-subtle);padding:16px;border-radius:12px;margin-bottom:12px;border-left:4px solid var(--brand-orange);">
           <div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:6px;">
-            <span>رقم الطلبية : ${o.orderId}</span>
+            <span>${isAr ? 'رقم الطلبية :' : 'Commande :'} ${o.orderId}</span>
             <span style="color:var(--brand-orange);">${o.totalDA}</span>
           </div>
-          <div style="font-size:0.9rem;"><strong>المنتج :</strong> ${o.productName} (x${o.quantity})</div>
-          <div style="font-size:0.9rem;"><strong>الولاية :</strong> ${o.wilaya} — ${o.commune} (${o.deliveryType})</div>
+          <div style="font-size:0.9rem;"><strong>${isAr ? 'المنتج :' : 'Produit :'}</strong> ${o.productName} (x${o.quantity})</div>
+          <div style="font-size:0.9rem;"><strong>${isAr ? 'الولاية :' : 'Wilaya :'}</strong> ${o.wilaya} — ${o.commune} (${o.deliveryType})</div>
           <div style="font-size:0.95rem;margin-top:8px;padding:8px 12px;background:#DCFCE7;color:#15803D;border-radius:8px;font-weight:800;">
-            الحالة (Statut) : ${o.status}
+            ${isAr ? 'الحالة :' : 'Statut :'} ${o.status}
           </div>
         </div>
       `).join('');

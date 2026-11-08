@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>سياسة الاستبدال والشروط القانونية | Mentions Légales &amp; CGV — ELWESMOU DZ</title>
+  <title>Mentions Légales &amp; CGV | الشروط القانونية — ELWESMOU DZ</title>
   <link rel="icon" type="image/png" href="./logos/minimal-1-favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body class="rtl">
+<body>
 
   <div class="announcement-bar">
-    🚚 التوصيل متوفر لـ <span>58 ولاية</span> — الدفع عند الاستلام (تخلص كي توصلك السلعة لباب الدار) 🇩🇿
+    🚚 Livraison disponible vers les <span>58 Wilayas</span> — Paiement à la livraison (Tu paies à la réception !) 🇩🇿
   </div>
 
   <header class="site-header">
@@ -20,45 +20,20 @@
         <img src="./logos/minimal-1-transparent.png" alt="ELWESMOU" />
       </a>
       <nav class="main-nav">
-        <a href="./index.html">الرئيسية (Boutique)</a>
-        <a href="./suivi-commande.html">📦 تتبع طلبيتك</a>
-        <a href="./mentions-legales.html" class="active">سياسة الاستبدال والشروط</a>
+        <a href="./index.html">Boutique</a>
+        <a href="./support-telephone.html">Support Téléphone 360°</a>
+        <a href="./filtre-evier.html">Filtre d'Évier</a>
+        <a href="./sac-magnetique.html">Sac Magnétique</a>
+        <a href="./suivi-commande.html">📦 Suivre ma commande</a>
       </nav>
+      <div class="header-actions">
+        <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">🇩🇿 العربية / الدارجة</button>
+      </div>
     </div>
   </header>
 
   <main class="shop-container" style="max-width:860px;">
-    <div class="info-card" style="display:flex;flex-direction:column;gap:22px;">
-      <h1 style="font-size:1.75rem;font-weight:900;">الشروط القانونية، التوصيل وسياسة الاستبدال (Mentions Légales &amp; CGV)</h1>
-
-      <section>
-        <h3>1. التوصيل لـ 58 ولاية والدفع عند الاستلام (Livraison &amp; Paiement COD)</h3>
-        <p style="color:var(--text-secondary);">
-          يوفر متجر <strong>ELWESMOU</strong> خدمة التوصيل السريع لجميع ولايات الوطن (58 ولاية) سواء إلى باب المنزل أو إلى مكاتب التوصيل (Stop Desk). الدفع يتم نقداً عند استلام الطرد (Cash on Delivery).
-        </p>
-      </section>
-
-      <section>
-        <h3>2. تأكيد الطلبيات عبر الهاتف (Confirmation téléphonique)</h3>
-        <p style="color:var(--text-secondary);">
-          بعد تسجيل طلبك في الموقع، يتصل بك فريق خدمة الزبائن هاتفياً لتأكيد العنوان وموعد الإرسال. يرجى إبقاء هاتفك متاحاً.
-        </p>
-      </section>
-
-      <section>
-        <h3>3. سياسة الاستبدال والضمان (Politique d'échange &amp; Remboursement)</h3>
-        <p style="color:var(--text-secondary);">
-          في حال وجود أي عيب مصنعي أو خطأ في المنتج المستلم، يضمن متجر <strong>ELWESMOU</strong> استبدال المنتج خلال 7 أيام من تاريخ الاستلام.
-        </p>
-      </section>
-
-      <section>
-        <h3>4. حماية البيانات الشخصية (Confidentialité)</h3>
-        <p style="color:var(--text-secondary);">
-          المعلومات المقدمة في استمارة الطلب (الاسم، رقم الهاتف، الولاية والبلدية) تُستخدم حصرياً لتوصيل طلبيتك ولا تتم مشاركتها مع أي طرف غير شركة التوصيل.
-        </p>
-      </section>
-    </div>
+    <div class="info-card" id="legalCardContent" style="display:flex;flex-direction:column;gap:22px;"></div>
   </main>
 
   <footer class="site-footer">
@@ -67,12 +42,63 @@
         <img src="./logos/minimal-1-dark-transparent.png" alt="ELWESMOU" />
       </a>
       <div class="footer-links">
-        <a href="./index.html">الرئيسية</a>
-        <a href="./suivi-commande.html">تتبع الطلبية</a>
+        <a href="./index.html">Accueil</a>
+        <a href="./suivi-commande.html">Suivi de commande</a>
+        <a href="./mentions-legales.html">Politique d'échange &amp; Mentions légales</a>
       </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ELWESMOU Algeria 🇩🇿 — Tous droits réservés</span>
+      <span>Livraison 58 Wilayas • Paiement à la livraison (COD)</span>
     </div>
   </footer>
 
+  <script>
+    window.renderPageSpecificLang = function(lang) {
+      const box = document.getElementById('legalCardContent');
+      if (lang === 'ar') {
+        box.innerHTML = `
+          <h1 style="font-size:1.75rem;font-weight:900;">الشروط القانونية، التوصيل وسياسة الاستبدال</h1>
+          <section>
+            <h3>1. التوصيل لـ 58 ولاية والدفع عند الاستلام</h3>
+            <p style="color:var(--text-secondary);">يوفر متجر <strong>ELWESMOU</strong> خدمة التوصيل السريع لجميع ولايات الوطن (58 ولاية) سواء إلى باب المنزل أو إلى مكاتب التوصيل (Stop Desk). الدفع يتم نقداً عند استلام الطرد.</p>
+          </section>
+          <section>
+            <h3>2. تأكيد الطلبيات عبر الهاتف</h3>
+            <p style="color:var(--text-secondary);">بعد تسجيل طلبك في الموقع، يتصل بك فريق خدمة الزبائن هاتفياً لتأكيد العنوان وموعد الإرسال. يرجى إبقاء هاتفك متاحاً.</p>
+          </section>
+          <section>
+            <h3>3. سياسة الاستبدال والضمان</h3>
+            <p style="color:var(--text-secondary);">في حال وجود أي عيب مصنعي أو خطأ في المنتج المستلم، يضمن متجر <strong>ELWESMOU</strong> استبدال المنتج خلال 7 أيام من تاريخ الاستلام.</p>
+          </section>
+          <section>
+            <h3>4. حماية البيانات الشخصية</h3>
+            <p style="color:var(--text-secondary);">المعلومات المقدمة في استمارة الطلب (الاسم، رقم الهاتف، الولاية والبلدية) تُستخدم حصرياً لتوصيل طلبيتك ولا تتم مشاركتها مع أي طرف غير شركة التوصيل.</p>
+          </section>
+        `;
+      } else {
+        box.innerHTML = `
+          <h1 style="font-size:1.75rem;font-weight:900;">Mentions Légales, Livraison 58 Wilayas &amp; Politique d'Échange</h1>
+          <section>
+            <h3>1. Livraison 58 Wilayas &amp; Paiement à la livraison (COD)</h3>
+            <p style="color:var(--text-secondary);">La boutique <strong>ELWESMOU</strong> assure la livraison rapide vers les 58 wilayas d'Algérie, à domicile ou en bureau de livraison (Stop Desk). Le paiement s'effectue uniquement en espèces à la réception de votre colis.</p>
+          </section>
+          <section>
+            <h3>2. Confirmation téléphonique des commandes</h3>
+            <p style="color:var(--text-secondary);">Après validation de votre commande sur le site, notre service client vous contacte par téléphone pour confirmer votre adresse et lancer l'expédition.</p>
+          </section>
+          <section>
+            <h3>3. Garantie &amp; Politique d'Échange</h3>
+            <p style="color:var(--text-secondary);">En cas de défaut de fabrication ou d'erreur sur l'article reçu, <strong>ELWESMOU</strong> garantit l'échange du produit sous 7 jours suivant la réception.</p>
+          </section>
+          <section>
+            <h3>4. Protection des données personnelles</h3>
+            <p style="color:var(--text-secondary);">Les informations saisies dans le formulaire de commande (Nom, Téléphone, Wilaya, Commune) sont utilisées exclusivement pour l'expédition de votre colis.</p>
+          </section>
+        `;
+      }
+    };
+  </script>
+  <script src="./app.js"></script>
 </body>
 </html>
-
